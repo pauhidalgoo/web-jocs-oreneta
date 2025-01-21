@@ -1,35 +1,47 @@
 /* General Body Styles */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #222;
+    font-family: 'Squid Game', 'Arial', sans-serif; /* Added a custom font, assuming you have it linked in your HTML. Replace 'Squid Game' with the actual font name */
+    background-color: #000; /* Darker background, more aligned with Squid Game theme */
     color: #eee;
     margin: 0;
     padding: 0;
     text-align: center;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
+@font-face {
+    font-family: 'Squid Game';
+    src: url('/static/fonts/squid_games.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* Container Styles */
 .login-container, .leaderboard-container, .timeline-container, .profile-container, .admin-dashboard, .manage-players, .manage-games, .upload-container {
-    background-color: #333;
-    border: 2px solid #d9534f;
-    border-radius: 10px;
+    background-color: #212529; /* Slightly lighter dark background */
+    border: 3px solid #dc3545; /* Red border, more pronounced */
+    border-radius: 15px; /* More rounded corners */
     margin: 20px auto;
     padding: 20px;
-    max-width: 800px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    max-width: 90%; /* Use percentage for better responsiveness */
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.5); /* Reddish shadow */
 }
 
 /* Header Styles */
 h1 {
-    color: #d9534f;
+    color: #dc3545; /* Red color for h1 */
     font-size: 2.5em;
     margin-bottom: 20px;
+    font-family: 'Squid Game', sans-serif; /* Apply the Squid Game font */
+    text-shadow: 0 0 10px #dc3545; /* Red glow effect */
 }
 
 h2 {
-    color: #f0ad4e;
+    color: #ffc107; /* Yellow color for h2 */
     font-size: 1.8em;
     margin-top: 30px;
+    font-family: 'Squid Game', sans-serif;
+    text-shadow: 0 0 8px #ffc107; /* Yellow glow effect */
 }
 
 /* Form Styles */
@@ -38,18 +50,19 @@ form {
 }
 
 input[type="number"], input[type="text"], input[type="password"], input[type="file"], select {
-    background-color: #444;
+    background-color: #343a40; /* Darker input fields */
     color: #eee;
-    border: 1px solid #555;
+    border: 1px solid #6c757d; /* Greyish border */
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
-    width: 80%;
-    max-width: 300px;
+    width: 90%; /* More responsive width */
+    max-width: 400px; /* Larger max-width */
+    font-size: 1rem;
 }
 
 button, a {
-    background-color: #d9534f;
+    background-color: #dc3545; /* Red color for buttons */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -57,11 +70,14 @@ button, a {
     border-radius: 5px;
     font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform transition */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button:hover, a:hover {
-    background-color: #c9302c;
+    background-color: #c82333; /* Darker red on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Table Styles */
@@ -72,13 +88,13 @@ table {
 }
 
 th, td {
-    border: 1px solid #555;
+    border: 1px solid #6c757d;
     padding: 10px;
     text-align: left;
 }
 
 th {
-    background-color: #555;
+    background-color: #343a40;
     color: white;
 }
 
@@ -86,12 +102,23 @@ th {
 .timeline {
     list-style-type: none;
     padding: 0;
+    position: relative; /* To position the line */
+}
+
+.timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #dc3545; /* Red line */
+    left: 30px; /* Adjust as needed */
+    margin-left: -2px; /* Adjust as needed */
 }
 
 .timeline li {
-    padding: 20px 0;
-    border-left: 3px solid #ddd;
-    margin-left: 20px;
+    padding: 20px 30px; /* Adjust padding */
+    position: relative;
 }
 
 .timeline li:before {
@@ -99,10 +126,13 @@ th {
     width: 20px;
     height: 20px;
     background-color: white;
+    border: 4px solid #dc3545; /* Red border */
     border-radius: 50%;
     position: absolute;
-    left: -11px;
+    left: 30px; /* Match the line position */
     top: 25px;
+    margin-left: -40px;
+    z-index: 10; /* Ensure circle is above the line */
 }
 
 .game-hidden {
@@ -118,7 +148,7 @@ th {
 }
 
 .game-revealed:before {
-    background-color: #f0ad4e; /* Yellow */
+    background-color: #ffc107; /* Yellow */
 }
 
 .game-completed {
@@ -126,14 +156,16 @@ th {
 }
 
 .game-completed:before {
-    background-color: #d9534f; /* Red */
+    background-color: #dc3545; /* Red */
 }
 
 /* Profile Picture */
 img {
-    max-width: 200px;
+    max-width: 150px; /* Adjust size for mobile */
+    height: auto;
     border-radius: 50%;
     margin: 20px 0;
+    border: 3px solid #dc3545;
 }
 
 /* Admin Section */
@@ -147,33 +179,82 @@ img {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+    .login-container, .leaderboard-container, .timeline-container, .profile-container, .admin-dashboard, .manage-players, .manage-games, .upload-container{
+        max-width: 95%;
+        margin: 10px auto;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
     input[type="number"], input[type="text"], input[type="password"], input[type="file"], select {
-        width: 90%;
+        font-size: 0.9rem;
+    }
+
+    .timeline:before {
+        left: 20px;
+    }
+
+    .timeline li {
+        padding: 20px;
     }
 
     .timeline li:before {
-        left: -10px;
+        left: 20px;
+        margin-left: -30px;
+    }
+
+    .eliminatory-leaderboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Smaller grid items */
+        gap: 10px;
+    }
+
+    .player-box img {
+        width: 60px; /* Smaller image */
+        height: 60px; /* Smaller image */
+    }
+
+    .player-number {
+        font-size: 12px;
+    }
+
+    .player-box{
+        margin-bottom: 10px;
+    }
+
+    .table-container {
+        max-height: 300px;
     }
 }
 
+/* Eliminatory Leaderboard Grid */
 .eliminatory-leaderboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust minmax as needed */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
     justify-content: center;
     padding: 20px;
 }
 
 .player-box {
-    border: 2px solid #ccc;
+    border: 2px solid #dc3545; /* Red border */
     border-radius: 10px;
     overflow: hidden;
-    position: relative; /* To position the player number */
-    transition: transform 0.2s ease-in-out; /* For a hover effect */
+    position: relative;
+    transition: transform 0.2s ease-in-out;
+    background-color: #212529;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.5); /* Reddish shadow */
 }
-.player-box:hover{
-    transform: scale(1.1);
+
+.player-box:hover {
+    transform: scale(1.05);
 }
 
 .player-image {
@@ -188,6 +269,8 @@ img {
     width: 100%;
     height: auto;
     display: block;
+    border-radius: 50%;
+    border: 3px solid #dc3545;
 }
 
 .player-number {
@@ -200,14 +283,16 @@ img {
     border-radius: 5px;
     font-weight: bold;
     font-size: 14px;
+    font-family: 'Squid Game', sans-serif;
 }
 
 .alive {
-    /* No additional styling for alive players */
+    background-color: rgba(0, 128, 0, 0.2);
 }
 
 .eliminated {
-    opacity: 0.6; /* Make eliminated players less prominent */
+    background-color: rgba(220, 53, 69, 0.2);
+    opacity: 0.7;
 }
 
 .player-status {
@@ -229,39 +314,29 @@ img {
     color: red;
 }
 
-/* ... other styles ... */
-
-
-.player-box {
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.player-box img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.alive {
-    background-color: rgba(0, 255, 0, 0.3); /* Light green */
-}
-
-.eliminated {
-    background-color: rgba(255, 0, 0, 0.3); /* Light red */
-}
-
 .blurred {
-    filter: blur(5px); /* Adjust blur intensity as needed */
+    filter: blur(5px);
 }
 
 .table-container {
-    max-height: 400px; /* Adjust as needed */
+    max-height: 400px;
     overflow-y: auto;
 }
 
 .eliminatedadmin {
-    background-color: #ffdddd; /* Light red */
+    background-color: #ffdddd;
+}
+
+/* Additional Squid Game Inspired Styles */
+.player-box.eliminated {
+    background-color: rgba(220, 53, 69, 0.5); /* More prominent red for eliminated players */
+}
+
+.player-box.eliminated img{
+    filter: grayscale(100%);
+}
+
+.player-box.eliminated:hover {
+    transform: scale(1);
+    cursor: default;
 }
