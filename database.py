@@ -97,6 +97,7 @@ player_names = [
     "Uriel Gil Palma",
     "Verónica Oñate Villagrasa",
     "Violeta Bonet Vila",
+    "Alberto Jerez Cubero",
     "Jordi Luque",
 ]
 
