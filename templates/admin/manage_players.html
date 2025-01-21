@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Players</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/admin.js"></script>
+</head>
+<body>
+    <div class="manage-players">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+        <h1>Manage Players</h1>
+
+        <input type="text" id="player-search" onkeyup="searchPlayers()" placeholder="Search for players by number.." title="Type in a player number">
+
+        <div class="table-container">
+            <table id="players-table">
+                <thead>
+                    <tr>
+                        <th>Player Number</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in players %}
+                    <tr id="player-row-{{ player.id }}">
+                        <td>{{ player.player_number }}</td>
+                        <td>{{ player.name if player.name else 'N/A' }}</td>
+                        <td id="player-{{ player.id }}-score">{{ player.score }}</td>
+                        <td>
+                            <div id="player-row-{{ player.id }}">
+                                <form action="/admin/update_score" method="post" class="update-score-form">
+                                    <input type="hidden" name="player_id" value="{{ player.id }}">
+                                    <input type="number" name="points" placeholder="Points" required>
+                                    <button type="submit">Update Score</button>
+                                </form>
+                            </div>
+                            <form action="/admin/eliminate_player" method="post" class="eliminate-player-form">
+                                <input type="hidden" name="player_id" value="{{ player.id }}">
+                                <select name="game_id">
+                                    {% for game in games %}
+                                        {% if game.type == 'Eliminatory' %}
+                                            <option value="{{ game.id }}">{{ game.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                {% if is_player_eliminated(player.id) %}
+                                    <input type="hidden" name="action" value="uneliminate">
+                                    <button type="submit">Uneliminate</button>
+                                {% else %}
+                                    <input type="hidden" name="action" value="eliminate">
+                                    <button type="submit">Eliminate</button>
+                                {% endif %}
+                            </form>
+
+                            <form action="/admin/delete_player/{{ player.id }}" method="post" class="delete-player-form">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this player? This action cannot be undone.');">Delete Player</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Teams</h2>
+        <div class="table-container">
+            <h3>Create Team</h3>
+            <form action="/admin/create_team" method="post">
+                <select name="game_name" required>
+                    <option value="" disabled selected>Select Game</option>
+                    {% for game in games %}
+                        <option value="{{ game.name }}">{{ game.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="team_name" placeholder="Team Name" required>
+                <button type="submit">Create Team</button>
+            </form>
+            
+            <h3>Manage Teams</h3>
+            <table id="teams-table">
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Game</th>
+                        <th>Members</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr>
+                        <td>{{ team.team_name }}</td>
+                        <td>{{ team.game_name }}</td>
+                        <td>
+                            <ul>
+                                {% for member in team.members %}
+                                <li>
+                                    {{ member.player_number }}
+                                    <form action="/admin/remove_team_member" method="post" style="display: inline;">
+                                        <input type="hidden" name="team_id" value="{{ team.id }}">
+                                        <input type="hidden" name="player_id" value="{{ member.id }}">
+                                        <button type="submit" onclick="return confirm('Are you sure you want to remove this player from the team?');">Remove</button>
+                                    </form>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <form action="/admin/add_team_member" method="post">
+                                <input type="hidden" name="team_id" value="{{ team.id }}">
+                                <select name="player_id">
+                                    {% for player in players %}
+                                    <option value="{{ player.id }}">{{ player.player_number }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit">Add Member</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/admin/update_team_score" method="post" class="update-team-score-form">
+                                <input type="hidden" name="team_id" value="{{ team.id }}">
+                                <input type="number" name="points" placeholder="Points" required>
+                                <button type="submit">Update Team Score</button>
+                            </form>
+                            <form action="/admin/delete_team/{{ team.id }}" method="post">
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this team?');">Delete Team</button>
+                        </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="/admin">Back to Dashboard</a>
+    </div>
+    <script>
+        function searchPlayers() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("player-search");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("players-table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

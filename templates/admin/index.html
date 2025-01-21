@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/admin.js"></script>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <h1>Admin Dashboard</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <ul>
+            <li><a href="/admin/players">Manage Players</a></li>
+            <li><a href="/admin/games">Manage Games</a></li>
+        </ul>
+
+        <h2>Create New Game</h2>
+        <form action="/admin/create_game" method="post">
+            <input type="text" name="name" placeholder="Game Name" required>
+            <select name="type">
+                <option value="Classifying">Classifying</option>
+                <option value="Eliminatory">Eliminatory</option>
+            </select>
+            <input type="number" name="max_players" placeholder="Max Players" required>
+            <button type="submit">Create Game</button>
+        </form>
+
+        <h2>Current Games</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Max Players</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                <tr>
+                    <td>{{ game.id }}</td>
+                    <td id="game-{{ game.id }}-name">{{ game.name }}</td>
+                    <td>{{ game.type }}</td>
+                    <td>{{ game.status }}</td>
+                    <td>{{ game.max_players }}</td>
+                    <td>
+                        {% if game.status == 'hidden' %}
+                        <form action="/admin/game/{{ game.id }}/start" method="post">
+                            <button type="submit" id="game-{{ game.id }}-start">Start</button>
+                        </form>
+                        {% elif game.status == 'revealed' %}
+                        <form action="/admin/game/{{ game.id }}/complete" method="post">
+                            <button type="submit" id="game-{{ game.id }}-complete">Mark as Complete</button>
+                        </form>
+                        {% elif game.name == 'Final: Preguntes' and game.status == 'completed' %}
+                        <form action="/admin/game/{{ game.id }}/start_voting" method="post">
+                            <button type="submit" id="game-{{ game.id }}-start_voting">Start Voting</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="/admin/logout">Logout</a>
+    </div>
+</body>
+</html>

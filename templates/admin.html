@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <h2>Leaderboard</h2>
+        <table class="leaderboard">
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player_number, player_data in players %}
+                <tr class="{% if player_data.status == 'eliminated' %}eliminated{% endif %}">
+                    <td>{{ player_number }}</td>
+                    <td>{{ player_data.score }}</td>
+                    <td>{{ player_data.status }}</td>
+                    <td>
+                        <form action="/update_score" method="post" class="score-form">
+                            <input type="hidden" name="player_number" value="{{ player_number }}">
+                            <input type="number" name="score_change" placeholder="Score change">
+                            <button type="submit">Update Score</button>
+                        </form>
+                        <form action="/eliminate_player" method="post">
+                            <input type="hidden" name="player_number" value="{{ player_number }}">
+                            <button type="submit">Eliminate</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Current Game: {{ game.name if game else 'None' }}</h2>
+
+        <h3>Reveal Next Game</h3>
+        <form action="/reveal_next_game" method="post">
+            <button type="submit">Reveal Next Game</button>
+        </form>
+
+        <h3>Update Game Results</h3>
+        <form action="/update_game_results" method="post">
+            <select name="game_name">
+                {% for game_option in data.games %}
+                    <option value="{{ game_option.name }}">{{ game_option.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="player_number" placeholder="Player Number" required>
+            <input type="text" name="result" placeholder="Result (e.g., Won, Lost)" required>
+            <button type="submit">Update Result</button>
+        </form>
+
+        <div class="timeline">
+            <h2>Game Timeline</h2>
+            <ul>
+                {% for game in data.games %}
+                <li class="game-item {{ game.status }}">
+                    <span class="game-name">{{ game.name }}</span>
+                    <span class="game-type">{{ game.type }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

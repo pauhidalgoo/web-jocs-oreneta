@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ profile_player.player_number }}'s Profile</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Player {{ profile_player.player_number }}</h1>
+        <p>Name: {{ profile_player.name if profile_player.name else 'Not Set' }}</p>
+        {% if profile_player.photo %}
+        <img src="/{{ profile_player.photo }}" alt="Player Photo">
+        {% endif %}
+        <h2>Game Results:</h2>
+        <ul>
+            {% for result in game_results %}
+            <li>{{ result.name }}: {{ result.result }}</li>
+            {% endfor %}
+        </ul>
+        <h2>Teams:</h2>
+        <ul>
+            {% for team in player_teams %}
+            <li>{{ team.game_name }}: {{ team.team_name }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/leaderboard">Back to Leaderboard</a>
+    </div>
+</body>
+</html>

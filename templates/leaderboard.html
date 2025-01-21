@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/scripts.js"></script>
+</head>
+<body>
+    <div class="leaderboard-container">
+        <h1>Leaderboard</h1>
+
+        <button id="toggle-leaderboard" onclick="toggleLeaderboard()">Show Eliminatory Leaderboard</button>
+
+        <div id="regular-leaderboard">
+            <h2>Regular Leaderboard</h2>
+            <input type="text" id="search-input" onkeyup="searchPlayers()" placeholder="Search for players.." title="Type in a player number">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player Number</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-table">
+                    {% for player in players %}
+                    <tr id="player-{{ player.id }}">
+                        <td><a href="/profile/{{ player.id }}">{{ player.player_number }}</a></td>
+                        <td>{{ player.name if player.name else 'N/A' }}</td>
+                        <td {% if current_player.id == player.id %}class="highlight"{% endif %}>{{ player.score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="eliminatory-leaderboard" style="display: none;">
+            <h2>Eliminatory Leaderboard</h2>
+            <select id="game-select" onchange="filterEliminatoryLeaderboard()">
+                <option value="">Select Game</option>
+                {% for game in games %}
+                    {% if game.type == 'Eliminatory' %}
+                        <option value="{{ game.id }}">{{ game.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <div class="eliminatory-leaderboard-grid">
+                {% for p in players %}
+                <div class="player-box {% if is_player_eliminated(p.id) %}eliminated{% else %}alive{% endif %}" id="player-box-{{ p.id }}" data-game-id="{% for res in game_results %}{% if res.player_id == p.id %}{{ res.game_id }},{% endif %}{% endfor %}">
+                    <a href="/profile/{{ p.id }}">
+                        <div class="player-image">
+                            {% if p.photo %}
+                            <img src="/{{ p.photo }}" alt="Player Photo">
+                            {% else %}
+                            <img src="/{{ config.DEFAULT_IMAGE }}" alt="Default Photo">
+                            {% endif %}
+                            <span class="player-number">{{ p.player_number }}</span>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="/games">View Games</a>
+    </div>
+    <script>
+      function toggleLeaderboard() {
+        var regularLeaderboard = document.getElementById("regular-leaderboard");
+        var eliminatoryLeaderboard = document.getElementById("eliminatory-leaderboard");
+        var toggleButton = document.getElementById("toggle-leaderboard");
+        
+        if (regularLeaderboard.style.display === "none") {
+          regularLeaderboard.style.display = "block";
+          eliminatoryLeaderboard.style.display = "none";
+          toggleButton.textContent = "Show Eliminatory Leaderboard";
+        } else {
+          regularLeaderboard.style.display = "none";
+          eliminatoryLeaderboard.style.display = "block";
+          toggleButton.textContent = "Show Regular Leaderboard";
+        }
+      }
+      function searchPlayers() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search-input");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("leaderboard-table");
+        tr = table.getElementsByTagName("tr");
+      
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0]; // Change 0 to the column index you want to search in
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+      function filterEliminatoryLeaderboard() {
+        const selectedGameId = document.getElementById("game-select").value;
+        const playerBoxes = document.querySelectorAll(".eliminatory-leaderboard-grid .player-box");
+
+        playerBoxes.forEach(box => {
+            const gameIds = box.dataset.gameId.split(",").map(id => id.trim());
+
+            if (selectedGameId === "" || gameIds.includes(selectedGameId)) {
+                box.style.display = "block";
+            } else {
+                box.style.display = "none";
+            }
+        });
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Games</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="manage-games">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+        <h1>Manage Games</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Game Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                <tr>
+                    <td id="game-{{ game.id }}-name">{{ game.name }}</td>
+                    <td>{{ game.type }}</td>
+                    <td id="game-{{ game.id }}-status">{{ game.status }}</td>
+                    <td>
+                        <form action="/admin/game/{{ game.id }}/reveal" method="post">
+                            <button type="submit" id="game-{{ game.id }}-reveal" data-game-id="{{ game.id }}" data-action="reveal"
+                            class="game-control-button" {% if game.status != 'hidden' %}style="display: none;"{% endif %}>
+                            Reveal</button>
+                        </form>
+                        <form action="/admin/game/{{ game.id }}/complete" method="post">
+                            <button type="submit" id="game-{{ game.id }}-complete" data-game-id="{{ game.id }}" data-action="complete"
+                            class="game-control-button" {% if game.status != 'revealed' %}style="display: none;"{% endif %}>
+                            Complete</button>
+                        </form>
+                        <form action="/admin/game/{{ game.id }}/start_voting" method="post">
+                            <button type="submit" id="game-{{ game.id }}-start_voting" data-game-id="{{ game.id }}" data-action="start_voting"
+                            class="game-control-button" {% if game.status != 'completed' or game.name != 'Final: Preguntes' %}style="display: none;"{% endif %}>
+                            Start Voting</button>
+                        </form>
+                        <form action="/admin/game/{{ game.id }}/restart" method="post">
+                            <button type="submit" id="game-{{ game.id }}-restart" data-game-id="{{ game.id }}" data-action="restart"
+                            class="game-control-button" {% if game.status == 'hidden' %}style="display: none;"{% endif %}>
+                            Restart</button>
+                        </form>
+                        <form action="/admin/delete_game/{{ game.id }}" method="post">
+                            <button type="submit" id="game-{{ game.id }}-delete" onclick="return confirm('Are you sure you want to delete this game?');">
+                            Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/admin">Back to Dashboard</a>
+    </div>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

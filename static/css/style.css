@@ -1,0 +1,267 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #222;
+    color: #eee;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Container Styles */
+.login-container, .leaderboard-container, .timeline-container, .profile-container, .admin-dashboard, .manage-players, .manage-games, .upload-container {
+    background-color: #333;
+    border: 2px solid #d9534f;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Header Styles */
+h1 {
+    color: #d9534f;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #f0ad4e;
+    font-size: 1.8em;
+    margin-top: 30px;
+}
+
+/* Form Styles */
+form {
+    margin-bottom: 20px;
+}
+
+input[type="number"], input[type="text"], input[type="password"], input[type="file"], select {
+    background-color: #444;
+    color: #eee;
+    border: 1px solid #555;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 300px;
+}
+
+button, a {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, a:hover {
+    background-color: #c9302c;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #555;
+    color: white;
+}
+
+/* Timeline Styles */
+.timeline {
+    list-style-type: none;
+    padding: 0;
+}
+
+.timeline li {
+    padding: 20px 0;
+    border-left: 3px solid #ddd;
+    margin-left: 20px;
+}
+
+.timeline li:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    left: -11px;
+    top: 25px;
+}
+
+.game-hidden {
+    opacity: 0.5;
+}
+
+.game-hidden:before {
+    background-color: gray;
+}
+
+.game-revealed {
+    opacity: 1;
+}
+
+.game-revealed:before {
+    background-color: #f0ad4e; /* Yellow */
+}
+
+.game-completed {
+    opacity: 1;
+}
+
+.game-completed:before {
+    background-color: #d9534f; /* Red */
+}
+
+/* Profile Picture */
+img {
+    max-width: 200px;
+    border-radius: 50%;
+    margin: 20px 0;
+}
+
+/* Admin Section */
+.admin-dashboard ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-dashboard li {
+    margin: 10px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    input[type="number"], input[type="text"], input[type="password"], input[type="file"], select {
+        width: 90%;
+    }
+
+    .timeline li:before {
+        left: -10px;
+    }
+}
+
+.eliminatory-leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust minmax as needed */
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.player-box {
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative; /* To position the player number */
+    transition: transform 0.2s ease-in-out; /* For a hover effect */
+}
+.player-box:hover{
+    transform: scale(1.1);
+}
+
+.player-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.player-number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.alive {
+    /* No additional styling for alive players */
+}
+
+.eliminated {
+    opacity: 0.6; /* Make eliminated players less prominent */
+}
+
+.player-status {
+    text-align: center;
+}
+
+.player-status img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.player-status.alive {
+    color: green;
+}
+
+.player-status.eliminated {
+    color: red;
+}
+
+/* ... other styles ... */
+
+
+.player-box {
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.player-box img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.alive {
+    background-color: rgba(0, 255, 0, 0.3); /* Light green */
+}
+
+.eliminated {
+    background-color: rgba(255, 0, 0, 0.3); /* Light red */
+}
+
+.blurred {
+    filter: blur(5px); /* Adjust blur intensity as needed */
+}
+
+.table-container {
+    max-height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+}
+
+.eliminatedadmin {
+    background-color: #ffdddd; /* Light red */
+}
