@@ -18,31 +18,31 @@
           {% endif %}
         {% endwith %}
         <ul>
-            <li><a href="/admin/players">Manage Players</a></li>
-            <li><a href="/admin/games">Manage Games</a></li>
+            <li><a href="/admin/players">Controla Jugadors</a></li>
+            <li><a href="/admin/games">Controla Jocs</a></li>
         </ul>
 
         <h2>Create New Game</h2>
         <form action="/admin/create_game" method="post">
             <input type="text" name="name" placeholder="Game Name" required>
             <select name="type">
-                <option value="Classifying">Classifying</option>
-                <option value="Eliminatory">Eliminatory</option>
+                <option value="Classifying">Classificatori</option>
+                <option value="Eliminatory">Eliminatori</option>
             </select>
             <input type="number" name="max_players" placeholder="Max Players" required>
-            <button type="submit">Create Game</button>
+            <button type="submit">Crea Joc</button>
         </form>
 
-        <h2>Current Games</h2>
+        <h2>Jocs Actuals</h2>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Type</th>
+                    <th>Nom</th>
+                    <th>Tipus</th>
                     <th>Status</th>
                     <th>Max Players</th>
-                    <th>Actions</th>
+                    <th>Accions</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,11 +60,11 @@
                         </form>
                         {% elif game.status == 'revealed' %}
                         <form action="/admin/game/{{ game.id }}/complete" method="post">
-                            <button type="submit" id="game-{{ game.id }}-complete">Mark as Complete</button>
+                            <button type="submit" id="game-{{ game.id }}-complete">Completat</button>
                         </form>
                         {% elif game.name == 'Final: Preguntes' and game.status == 'completed' %}
                         <form action="/admin/game/{{ game.id }}/start_voting" method="post">
-                            <button type="submit" id="game-{{ game.id }}-start_voting">Start Voting</button>
+                            <button type="submit" id="game-{{ game.id }}-start_voting">Vota</button>
                         </form>
                         {% endif %}
                     </td>

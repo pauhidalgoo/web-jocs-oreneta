@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ profile_player.player_number }}'s Profile</title>
+    <title>Perfil de {{ profile_player.player_number }}</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <div class="profile-container">
-        <h1>Player {{ profile_player.player_number }}</h1>
-        <p>Name: {{ profile_player.name if profile_player.name else 'Not Set' }}</p>
+        <h1>Jugador {{ profile_player.player_number }}</h1>
+        <p>Nom: {{ profile_player.name if profile_player.name else 'No establert' }}</p>
         {% if profile_player.photo %}
-        <img src="/{{ profile_player.photo }}" alt="Player Photo">
+        <img src="/{{ profile_player.photo }}" alt="Foto del jugador">
         {% endif %}
-        <h2>Game Results:</h2>
+        <h2>Resultats dels Jocs:</h2>
         <ul>
             {% for result in game_results %}
             <li>{{ result.name }}: {{ result.result }}</li>
             {% endfor %}
         </ul>
-        <h2>Teams:</h2>
+        <h2>Equips:</h2>
         <ul>
             {% for team in player_teams %}
             <li>{{ team.game_name }}: {{ team.team_name }}</li>
             {% endfor %}
         </ul>
-        <a href="/leaderboard">Back to Leaderboard</a>
+        <a href="/leaderboard">Tornar a la Classificació</a>
     </div>
 </body>
 </html>

@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaderboard</title>
+    <title>Classificació</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <script src="/static/js/scripts.js"></script>
 </head>
 <body>
     <div class="leaderboard-container">
-        <h1>Leaderboard</h1>
+        <h1>Classificació</h1>
 
-        <button id="toggle-leaderboard" onclick="toggleLeaderboard()">Show Eliminatory Leaderboard</button>
+        <button id="toggle-leaderboard" onclick="toggleLeaderboard()">Mostra la Classificació Eliminatòria</button>
 
         <div id="regular-leaderboard">
-            <h2>Regular Leaderboard</h2>
-            <input type="text" id="search-input" onkeyup="searchPlayers()" placeholder="Search for players.." title="Type in a player number">
+            <h2>Classificació Regular</h2>
+            <input type="text" id="search-input" onkeyup="searchPlayers()" placeholder="Cerca jugadors..." title="Escriu un número de jugador">
             <table>
                 <thead>
                     <tr>
-                        <th>Player Number</th>
-                        <th>Name</th>
-                        <th>Score</th>
+                        <th>Número de Jugador</th>
+                        <th>Nom</th>
+                        <th>Puntuació</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboard-table">
@@ -35,9 +35,9 @@
         </div>
 
         <div id="eliminatory-leaderboard" style="display: none;">
-            <h2>Eliminatory Leaderboard</h2>
+            <h2>Classificació Eliminatòria</h2>
             <select id="game-select" onchange="filterEliminatoryLeaderboard()">
-                <option value="">Select Game</option>
+                <option value="">Selecciona un Joc</option>
                 {% for game in games %}
                     {% if game.type == 'Eliminatory' %}
                         <option value="{{ game.id }}">{{ game.name }}</option>
@@ -47,12 +47,13 @@
             <div class="eliminatory-leaderboard-grid">
                 {% for p in players %}
                 <div class="player-box {% if is_player_eliminated(p.id) %}eliminated{% else %}alive{% endif %}" id="player-box-{{ p.id }}" data-game-id="{% for res in game_results %}{% if res.player_id == p.id %}{{ res.game_id }},{% endif %}{% endfor %}">
+                    
                     <a href="/profile/{{ p.id }}">
                         <div class="player-image">
                             {% if p.photo %}
-                            <img src="/{{ p.photo }}" alt="Player Photo">
+                            <img src="/{{ p.photo }}" alt="Foto del Jugador">
                             {% else %}
-                            <img src="/{{ config.DEFAULT_IMAGE }}" alt="Default Photo">
+                            <img src="/{{ config.DEFAULT_IMAGE }}" alt="Foto per Defecte">
                             {% endif %}
                             <span class="player-number">{{ p.player_number }}</span>
                         </div>
@@ -62,7 +63,7 @@
             </div>
         </div>
 
-        <a href="/games">View Games</a>
+        <a href="/games">Veure Jocs</a>
     </div>
     <script>
       function toggleLeaderboard() {
@@ -73,11 +74,11 @@
         if (regularLeaderboard.style.display === "none") {
           regularLeaderboard.style.display = "block";
           eliminatoryLeaderboard.style.display = "none";
-          toggleButton.textContent = "Show Eliminatory Leaderboard";
+          toggleButton.textContent = "Mostra la Classificació Eliminatòria";
         } else {
           regularLeaderboard.style.display = "none";
           eliminatoryLeaderboard.style.display = "block";
-          toggleButton.textContent = "Show Regular Leaderboard";
+          toggleButton.textContent = "Mostra la Classificació Regular";
         }
       }
       function searchPlayers() {

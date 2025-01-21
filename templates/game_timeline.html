@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Game Timeline</title>
+    <title>Cronologia del Joc</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <script src="/static/js/scripts.js"></script>
 </head>
 <body>
     <div class="timeline-container">
-        <h1>Game Timeline</h1>
+        <h1>Cronologia del Joc</h1>
         <ul class="timeline">
             {% for game in games %}
             <li class="game-{{ game.status }} {% if game.status != 'revealed' %}blurred{% endif %}" id="game-{{ game.id }}" id="game-{{ game.id }}">
                 <h2>{{ game.name }}</h2>
-                <p>Type: {{ game.type }}</p>
-                <p>Status: {{ game.status }}</p>
+                <p>Tipus: {{ game.type }}</p>
+                <p>Estat: {{ game.status }}</p>
                 <div class="game-revealed-content" {% if game.status != 'revealed' %}style="display: none;"{% endif %}>
                     {% if game.status == 'revealed' %}
                     {% if game.name == '1-2-1-2' %}
                     {% set user_team = player_teams|selectattr('game_name', 'equalto', '1-2-1-2')|first %}
                     {% if user_team %}
-                        <p>You are in team: {{ user_team.team_name }}</p>
-                        <p>Team Members:</p>
+                        <p>Estàs a l'equip: {{ user_team.team_name }}</p>
+                        <p>Membres de l'equip:</p>
                         <ul>
                             {% for member in user_team.members %}
                                 <li>{{ member.player_number }}</li>
@@ -29,17 +29,17 @@
                     {% else %}
                         <form action="/register_team" method="post" id="team-registration-form">
                             <input type="hidden" name="game_name" value="{{ game.name }}">
-                            <input type="text" name="team_name" placeholder="Team Name" required>
+                            <input type="text" name="team_name" placeholder="Nom de l'equip" required>
                             
-                            <label for="player_search">Search and add team members (4 required):</label>
-                            <input type="text" id="player_search" placeholder="Search by player number">
+                            <label for="player_search">Cerca i afegeix membres a l'equip (4 necessaris):</label>
+                            <input type="text" id="player_search" placeholder="Cerca per número de jugador">
                             <div id="player_suggestions"></div>
                             
                             <div id="selected_players">
-                                <!-- Selected players will be displayed here -->
+                                <!-- Els jugadors seleccionats es mostraran aquí -->
                             </div>
                             
-                            <button type="submit" disabled id="register_team_button">Register Team</button>
+                            <button type="submit" disabled id="register_team_button">Registra l'equip</button>
                         </form>
                         <script>
                             const playerSearchInput = document.getElementById('player_search');
@@ -75,16 +75,16 @@
                                 const playerItem = document.createElement('div');
                                 playerItem.textContent = `${player.player_number} (${player.name})`;
                                 
-                                // Add a hidden input for each selected player
+                                // Afegeix una entrada oculta per a cada jugador seleccionat
                                 const hiddenInput = document.createElement('input');
                                 hiddenInput.type = 'hidden';
                                 hiddenInput.name = 'team_members[]';
                                 hiddenInput.value = player.id;
                                 playerItem.appendChild(hiddenInput);
 
-                                // Add a remove button
+                                // Afegeix un botó per eliminar
                                 const removeButton = document.createElement('button');
-                                removeButton.textContent = 'Remove';
+                                removeButton.textContent = 'Elimina';
                                 removeButton.addEventListener('click', () => {
                                     removePlayerFromTeam(player.id, playerItem);
                                 });
@@ -114,10 +114,10 @@
                         {% elif game.name == 'Mocador' %}
                             {% set player_mocador_team = player_teams|selectattr('game_name', 'equalto', 'Mocador')|first %}
                             {% if player_mocador_team %}
-                                <p>You are in team: {{ player_mocador_team.team_name }}</p>
+                                <p>Estàs a l'equip: {{ player_mocador_team.team_name }}</p>
                             {% else %}
-                                <p>Choose a team:</p>
-                                {% set mocador_teams = get_mocador_teams() %}  {# Assuming you have a function to fetch teams #}
+                                <p>Tria un equip:</p>
+                                {% set mocador_teams = get_mocador_teams() %}  {# Suposant que tens una funció per obtenir els equips #}
                                 {% for team in mocador_teams %}
                                     <form action="/join_team/{{ team.id }}" method="post">
                                         <button type="submit">{{ team.team_name }}</button>
@@ -125,10 +125,10 @@
                                 {% endfor %}
                             {% endif %}
                         {% elif game.name == 'Final: Preguntes' and game.status == 'ongoing' %}
-                            <p>Vote for the winner:</p>
+                            <p>Vota pel guanyador:</p>
                             {% for p in players %}
                             <form action="/vote/{{ p.id }}" method="post">
-                                <button type="submit">Vote for {{ p.player_number }}</button>
+                                <button type="submit">Vota per {{ p.player_number }}</button>
                             </form>
                             {% endfor %}
                         {% endif %}
@@ -137,7 +137,7 @@
             </li>
             {% endfor %}
         </ul>
-        <a href="/leaderboard">View Leaderboard</a>
+        <a href="/leaderboard">Veure la Classificació</a>
     </div>
 </body>
 </html>
