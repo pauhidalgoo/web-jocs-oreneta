@@ -99,6 +99,7 @@ player_names = [
     "Violeta Bonet Vila",
     "Alberto Jerez Cubero",
     "Jordi Luque",
+    "Pau Escobar"
 ]
 
 
