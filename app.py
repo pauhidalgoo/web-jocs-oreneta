@@ -414,7 +414,7 @@ def restart_game(game_id):
 # --- Initialize the Database ---
 with app.app_context():
     database.init_db()
-    database.add_admin('admin1', 'caigei29')
+    database.add_admin('admin1', 'admin129')
     database.create_game('Pica Paret', 'Classifying', 80)
     database.create_game('1-2-1-2', 'Classifying', 80)
     database.create_game('Mocador', 'Classifying', 80)
